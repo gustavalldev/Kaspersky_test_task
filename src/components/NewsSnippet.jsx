@@ -119,23 +119,32 @@ const NewsSnippet = ({ data }) => {
 
       {/* Основной контент и выделенные части */}
       <div className="news-content">
-        {data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 && (
-          <div className="news-highlights">
-            {data.HIGHLIGHTS.slice(0, showMore ? data.HIGHLIGHTS.length : 1).map((highlight, index) => (
-              <div key={index} className="news-highlight">
-                {formatHighlights(highlight)}
+        {!showMore ? (
+          // Показываем только первый хайлайт, если он есть
+          data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 ? (
+            <div className="news-highlights">
+              <div className="news-highlight">
+                {formatHighlights(data.HIGHLIGHTS[0])}
               </div>
-            ))}
+            </div>
+          ) : (
+            // Если хайлайтов нет, показываем сокращенную версию AB
+            <div className="news-abstract">
+              {data.AB && data.AB.length > 150 ? data.AB.substring(0, 150) + '...' : data.AB}
+            </div>
+          )
+        ) : (
+          // При нажатии "Show more" показываем полный текст новости (AB)
+          <div className="news-abstract">
+            {data.AB}
           </div>
         )}
       </div>
 
       {/* Кнопка "Показать больше" */}
-      {data.HIGHLIGHTS && data.HIGHLIGHTS.length > 1 && (
-        <div className="show-more" onClick={() => setShowMore(!showMore)}>
-          {showMore ? 'Show less' : 'Show more'} <DownOutlined style={{ transform: showMore ? 'rotate(180deg)' : 'none' }} />
-        </div>
-      )}
+      <div className="show-more" onClick={() => setShowMore(!showMore)}>
+        {showMore ? 'Show less' : 'Show more'} <DownOutlined style={{ transform: showMore ? 'rotate(180deg)' : 'none' }} />
+      </div>
 
       {/* Ключевые слова с счетчиками */}
       <div className="keywords-container">
