@@ -17,7 +17,15 @@ const NewsSnippet = ({ data }) => {
   // Форматирование даты публикации
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear();
+    
+    return (
+      <>
+        <span className="day-number">{day}</span> {month} {year}
+      </>
+    );
   };
 
   // Выделение и форматирование ключевых слов в тексте highlights
@@ -38,9 +46,9 @@ const NewsSnippet = ({ data }) => {
   // Форматирование числа охвата
   const formatReach = (reach) => {
     if (reach >= 1000) {
-      return `${(reach / 1000).toFixed(1)}K`;
+      return <span>{(reach / 1000).toFixed(1)}K</span>;
     }
-    return reach.toString();
+    return <span>{reach.toString()}</span>;
   };
 
   // Форматирование трафика для отображения
@@ -50,37 +58,39 @@ const NewsSnippet = ({ data }) => {
     let trafficText = 'Top Traffic: ';
     data.TRAFFIC.forEach((item, index) => {
       if (index < 3) { // Показываем только топ-3 страны
-        trafficText += `${item.value} ${Math.round(item.count * 100)}%`;
+        trafficText += item.value + ' ';
+        // Оборачиваем процент в span с классом
+        trafficText += `<span class="traffic-percent">${Math.round(item.count * 100)}%</span>`;
         if (index < Math.min(2, data.TRAFFIC.length - 1)) {
           trafficText += ' ';
         }
       }
     });
     
-    return trafficText;
+    return <span dangerouslySetInnerHTML={{ __html: trafficText }} />;
   };
 
   return (
     <div className="news-snippet">
       {/* Верхняя часть с датой и статистикой */}
-      <div className="news-header-stats">
-        <div className="news-reach-info">
+      <div className="news-reach-info">
+        <div className="news"> 
           <div className="news-date">
             {formatDate(data.DP)}
           </div>
           <span className="news-reach">{formatReach(data.REACH)} Reach</span>
           <span className="news-traffic">{formatTraffic()}</span>
-          <div className="prefix"> 
-            <span className={`news-sentiment sentiment-${data.SENT.toLowerCase()}`}>
-              {data.SENT.charAt(0).toUpperCase() + data.SENT.slice(1)}
-            </span>
-            <Tooltip title="Info">
-              <InfoCircleOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
-            </Tooltip>
-            <Tooltip title="Bookmark">
-              <InfoCircleOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
-            </Tooltip>
           </div>
+        <div className="prefix"> 
+          <span className={`news-sentiment sentiment-${data.SENT.toLowerCase()}`}>
+            {data.SENT.charAt(0).toUpperCase() + data.SENT.slice(1)}
+          </span>
+          <Tooltip title="Info">
+            <InfoCircleOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
+          </Tooltip>
+          <Tooltip title="Bookmark">
+            <InfoCircleOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
+          </Tooltip>
         </div>
       </div>
 

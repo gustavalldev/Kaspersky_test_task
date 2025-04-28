@@ -22,10 +22,33 @@
   font-size: 14px;
 }
 
+.news-date span, .news-reach span, .traffic-percent {
+  color: #BDBDC9;
+  font-weight: 500;
+}
+
+
+
 .news-reach-info {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;  /* Добавляем ширину 100% */
+  justify-content: space-between;  /* Распределяем элементы по краям */
+}
+
+/* Группируем левые элементы */
+.news-reach-info > :not(.prefix) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Стили для правой группы элементов */
+.prefix {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .news-reach {
@@ -41,7 +64,7 @@
 /* Индикатор сантимента */
 .news-sentiment {
   padding: 4px 12px;
-  border-radius: 16px;
+  border-radius: 7px;
   font-size: 12px;
   font-weight: 500;
   margin-left: 8px;
@@ -71,10 +94,7 @@
   line-height: 1.3;
 }
 
-.news-title a {
-  color: #3b82f6;
-  text-decoration: none;
-}
+
 
 .news-title a:hover {
   text-decoration: underline;
