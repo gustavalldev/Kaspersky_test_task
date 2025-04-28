@@ -59,10 +59,7 @@ const App = () => {
   return (
     <Layout className="app-layout">
       <Content className="app-content">
-        <div className="app-container">
-          <h1 className="app-title">Новостной компонент</h1>
           <NewsSnippet data={newsData} />
-        </div>
       </Content>
     </Layout>
   );
