@@ -1,52 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Tag, Typography, Space, Tooltip } from 'antd';
 import { GlobalOutlined, UserOutlined, FlagOutlined, StarOutlined } from '@ant-design/icons';
 import './NewsSnippet.css';
 
-// Интерфейс для данных о новостях
-// export interface IData_SnippetNews {
-//   ID: number;                   // идентификатор новости
-//   TI: string;                   // заголовок новости
-//   AB: string;                   // содержимое новости
-//   URL: string;                  // ссылка на новость
-//   DOM: string;                  // домен
-//   DP: string;                   // дата и время публикации новости в формате "%Y-%m-%dT%H:%M:%S")
-//   LANG: string;                 // язык новости
-//   REACH: number;                // охват новости
-//   KW: IData_TagItem[];          // ключевые слова
-//   AU: string[];                 // автор новости
-//   CNTR: string;                 // страна
-//   CNTR_CODE: string;            // код страны
-//   SENT: string;                 // сантимент новости
-//   TRAFFIC: IData_TrafficItem[]; // траффик из стран
-//   FAV: string;                  // ссылка на иконку
-//   HIGHLIGHTS: string[];         // блоки содержимого новости с ключевыми словами
-// }
-
-// Тэг для сниппета
-// export interface IData_TagItem {
-//   value: string;                // название тега
-//   count: number;                // кол-во тегов с указанным названием
-// }
-
-// Траффик для сниппета
-// export interface IData_TrafficItem {
-//   value: string;                // название страны-источник траффика
-//   count: number;                // объём траффика для указанной страны
-// }
-
 const { Text, Title, Paragraph } = Typography;
 
 const NewsSnippet = ({ data }) => {
+  const [showMore, setShowMore] = useState(false);
+
   // Форматирование даты публикации
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
       day: '2-digit',
       month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      year: 'numeric'
     });
   };
 
@@ -82,90 +50,104 @@ const NewsSnippet = ({ data }) => {
   // Форматирование числа охвата
   const formatReach = (reach) => {
     if (reach >= 1000) {
-      return `${(reach / 1000).toFixed(1)}K`;
+      return `${Math.floor(reach / 1000)}K`;
     }
     return reach.toString();
+  };
+
+  // Форматирование процентов трафика
+  const formatTrafficPercent = (value) => {
+    return `${Math.floor(value * 100)}%`;
   };
 
   return (
     <Card className="news-snippet" bordered={false}>
       <div className="news-header">
-        <div className="news-title-container">
-          <div className="news-favicon">
-            {data.FAV && <img src={data.FAV} alt="Source favicon" />}
-          </div>
-          <div className="news-title-info">
-            <Title level={4} className="news-title">
-              <a href={data.URL} target="_blank" rel="noopener noreferrer">{data.TI}</a>
-            </Title>
-            <div className="news-meta">
-              <Space className="news-meta-items">
-                <Text className="news-domain">
-                  <GlobalOutlined /> {data.DOM}
-                </Text>
-                {data.AU.length > 0 && (
-                  <Text className="news-author">
-                    <UserOutlined /> {data.AU.join(', ')}
-                  </Text>
-                )}
-                <Text className="news-date">
-                  {formatDate(data.DP)}
-                </Text>
-                <Text className={`news-sentiment ${getSentimentClass(data.SENT)}`}>
-                  {data.SENT}
-                </Text>
-              </Space>
-            </div>
-          </div>
+        <div className="news-date-reach">
+          <span className="news-date">{formatDate(data.DP)}</span>
+          <span className="news-reach">{formatReach(data.REACH)} Reach</span>
+          <span className="news-traffic-top">
+            Top Traffic: 
+            {data.TRAFFIC && data.TRAFFIC.map((traffic, index) => (
+              <span key={index} className="traffic-item">
+                {` ${traffic.value} ${formatTrafficPercent(traffic.count)}`}
+                {index < data.TRAFFIC.length - 1 && ' '}
+              </span>
+            ))}
+          </span>
         </div>
-        <div className="news-stats">
-          <Tooltip title={`Reach: ${data.REACH}`}>
-            <div className="news-reach">
-              <StarOutlined /> {formatReach(data.REACH)}
-            </div>
-          </Tooltip>
-          <div className="news-country">
-            <Tooltip title={data.CNTR}>
-              <FlagOutlined /> {data.CNTR_CODE}
-            </Tooltip>
+        <div className="news-sentiment-container">
+          <Tag className={`news-sentiment ${getSentimentClass(data.SENT)}`}>
+            {data.SENT}
+          </Tag>
+          <div className="icon-buttons">
+            <button className="icon-btn">i</button>
+            <button className="icon-btn">□</button>
           </div>
         </div>
       </div>
-      
-      <Paragraph className="news-abstract">{data.AB}</Paragraph>
-      
-      {data.HIGHLIGHTS.length > 0 && (
-        <div className="news-highlights">
-          {data.HIGHLIGHTS.map((highlight, index) => (
-            <Paragraph key={index} className="news-highlight">
-              {formatHighlights(highlight)}
-            </Paragraph>
-          ))}
+
+      <Title level={4} className="news-title">
+        <a href={data.URL} target="_blank" rel="noopener noreferrer">{data.TI}</a>
+      </Title>
+
+      <div className="news-source-info">
+        <div className="news-source">
+          <GlobalOutlined className="globe-icon" />
+          <span className="source-name">{data.DOM}</span>
+          <span className="country-flag">{data.CNTR}</span>
         </div>
-      )}
-      
-      {data.KW.length > 0 && (
-        <div className="news-keywords">
-          {data.KW.map((keyword, index) => (
-            <Tag key={index} className="news-keyword-tag">
-              {keyword.value} ({keyword.count})
-            </Tag>
-          ))}
+        <div className="news-authors">
+          <UserOutlined className="user-icon" />
+          {data.AU && data.AU.length > 0 ? (
+            <span className="authors-names">{data.AU.join(', ')}</span>
+          ) : (
+            <span className="authors-names">Unknown author</span>
+          )}
         </div>
-      )}
-      
-      {data.TRAFFIC.length > 0 && (
-        <div className="news-traffic">
-          <Text className="news-traffic-title">Traffic:</Text>
-          <div className="news-traffic-items">
-            {data.TRAFFIC.map((traffic, index) => (
-              <Tag key={index} className="news-traffic-tag">
-                {traffic.value} ({(traffic.count * 100).toFixed()}%)
-              </Tag>
+      </div>
+
+      <div className="news-content">
+        <Paragraph className="news-abstract" ellipsis={{ rows: 3, expandable: false }}>
+          {data.AB}
+        </Paragraph>
+
+        {data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 && (
+          <div className={`news-highlights ${showMore ? 'expanded' : ''}`}>
+            {data.HIGHLIGHTS.map((highlight, index) => (
+              <Paragraph key={index} className="news-highlight">
+                {formatHighlights(highlight)}
+              </Paragraph>
             ))}
           </div>
+        )}
+      </div>
+
+      <div className="news-footer">
+        <div className="show-more" onClick={() => setShowMore(!showMore)}>
+          Show {showMore ? 'less' : 'more'} <span className="show-more-arrow">{showMore ? '▲' : '▼'}</span>
         </div>
-      )}
+
+        <div className="news-tags">
+          {data.KW && data.KW.map((keyword, index) => (
+            <Tag className="tag-with-count" key={index}>
+              <span className="tag-icon">⊙</span> {keyword.value} <span className="tag-count">{keyword.count}</span>
+            </Tag>
+          ))}
+          {data.KW && data.KW.length > 0 && (
+            <span className="show-all-tags">Show All +{data.KW.length}</span>
+          )}
+        </div>
+
+        <div className="news-source-link">
+          <a href={data.URL} className="source-link-btn">Original Source</a>
+        </div>
+
+        <div className="news-duplicates">
+          <span className="duplicates-count">Duplicates: {data.ID % 1000}</span>
+          <span className="sort-by">By Relevance <span className="sort-arrow">▼</span></span>
+        </div>
+      </div>
     </Card>
   );
 };
