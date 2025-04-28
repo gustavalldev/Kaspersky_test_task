@@ -22,7 +22,7 @@
   font-size: 14px;
 }
 
-.news-date span, .news-reach span, .traffic-percent {
+.news-date span, .news-reach span, .traffic-percent, .duplicates-count {
   color: #BDBDC9;
   font-weight: 500;
 }
@@ -149,7 +149,7 @@
 
 /* Контент новости */
 .news-content {
-  margin-bottom: 16px;
+  margin-bottom: 5px;
   color: #d1d5db;
   font-size: 14px;
   line-height: 1.6;
@@ -179,7 +179,7 @@
 .show-more {
   color: #3b82f6;
   font-size: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -205,7 +205,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
 }
 
 .keyword-tag {
@@ -246,8 +246,7 @@
 
 /* Раздел дубликатов */
 .duplicates-section {
-  margin-top: 20px;
-  padding-top: 16px;
+  margin-top: 30px;
 }
 
 .duplicates-header {
@@ -268,7 +267,7 @@
 }
 
 .duplicate-item {
-  border: 1px solid #2a2f3a;
+  border: 1px solid #2563eb;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 12px;
@@ -276,7 +275,6 @@
 
 .duplicate-header {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 8px;
 }
 
@@ -286,8 +284,9 @@
 }
 
 .duplicate-reach {
-  color: #9aa0a6;
+  color: #BDBDC9;
   font-size: 13px;
+  margin-left: 20px;
 }
 
 .duplicate-title {
@@ -324,13 +323,14 @@
   font-size: 13px;
 }
 
+
 /* Кнопка просмотра дубликатов */
 .view-duplicates-btn {
   width: 100%;
   background-color: transparent;
-  border: 1px solid #2a2f3a;
+  border: 1px solid #929292;
   border-radius: 4px;
-  color: #fff;
+  color: #d1d5db;
   padding: 10px;
   display: flex;
   align-items: center;

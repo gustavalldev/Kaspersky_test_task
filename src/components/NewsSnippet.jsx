@@ -46,62 +46,33 @@ const NewsSnippet = ({ data }) => {
 
   // Выделение ключевых слов в полном тексте
   const formatFullText = (text) => {
-    if (!text) return '';
+    if (!text || !data.KW || data.KW.length === 0) return text;
     
-    // Если есть ключевые слова, выделим их в тексте
-    if (data.KW && data.KW.length > 0) {
-      // Создаем копию текста для обработки
-      let result = text;
+    // Создаем регулярное выражение для поиска ключевых слов
+    // Сортируем ключевые слова по длине (от длинных к коротким), 
+    // чтобы избежать проблем с подстроками
+    const keywordsRegex = data.KW
+      .sort((a, b) => b.value.length - a.value.length)
+      .map(kw => kw.value)
+      .join('|');
       
-      // Создаем массив частей для последующего объединения
-      const parts = [];
-      let lastIndex = 0;
-      
-      // Сортируем ключевые слова по длине в обратном порядке,
-      // чтобы избежать проблем с подстроками
-      const sortedKeywords = [...data.KW].sort((a, b) => 
-        b.value.length - a.value.length
+    const regex = new RegExp(`(${keywordsRegex})`, 'gi');
+    
+    // Разбиваем текст на части по ключевым словам
+    const parts = text.split(regex);
+    
+    // Отображаем каждую часть, выделяя ключевые слова
+    return parts.map((part, index) => {
+      const isKeyword = data.KW.some(kw => 
+        kw.value.toLowerCase() === part.toLowerCase()
       );
       
-      // Ищем все вхождения ключевых слов и заменяем их
-      sortedKeywords.forEach(keyword => {
-        const regex = new RegExp(keyword.value, 'gi');
-        let match;
-        
-        while ((match = regex.exec(result)) !== null) {
-          // Добавляем текст до ключевого слова
-          parts.push({
-            type: 'text',
-            content: result.substring(lastIndex, match.index)
-          });
-          
-          // Добавляем ключевое слово
-          parts.push({
-            type: 'keyword',
-            content: match[0]
-          });
-          
-          lastIndex = match.index + match[0].length;
-        }
-      });
-      
-      // Добавляем оставшийся текст
-      if (lastIndex < result.length) {
-        parts.push({
-          type: 'text',
-          content: result.substring(lastIndex)
-        });
+      if (isKeyword) {
+        return <span key={index} className="keyword-highlight">{part}</span>;
       }
       
-      // Форматируем части в JSX
-      return parts.map((part, index) => 
-        part.type === 'keyword' 
-          ? <span key={index} className="keyword-highlight">{part.content}</span> 
-          : <React.Fragment key={index}>{part.content}</React.Fragment>
-      );
-    }
-    
-    return text;
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    });
   };
 
   // Форматирование числа охвата
@@ -183,18 +154,16 @@ const NewsSnippet = ({ data }) => {
 
       {/* Основной контент и выделенные части */}
       <div className="news-content">
-        {!showMore ? (
-          // Показываем только первый хайлайт, если он есть
-          data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 && (
-            <div className="news-highlights">
-              <div className="news-highlight">
-                {formatHighlights(data.HIGHLIGHTS[0])}
-              </div>
-            </div>
-          )
-        ) : (
-          // При нажатии "Show more" показываем полный текст новости (AB) с выделенными ключевыми словами
-          <div className="news-abstract">
+        {/* Показываем первый highlight только если не нажата кнопка "Show more" */}
+        {!showMore && data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 && (
+          <div className="news-highlight">
+            {formatHighlights(data.HIGHLIGHTS[0])}
+          </div>
+        )}
+        
+        {/* При нажатии "Show more" показываем полный текст */}
+        {showMore && (
+          <div className="news-full-text">
             {formatFullText(data.AB)}
           </div>
         )}
@@ -228,7 +197,7 @@ const NewsSnippet = ({ data }) => {
       {/* Секция с дубликатами */}
       <div className="duplicates-section">
         <div className="duplicates-header">
-          <span>Duplicates: 192</span>
+          <span>Duplicates: <span className="duplicates-count">192</span></span>
           <div className="sort-by">
             By Relevance <SortDescendingOutlined />
           </div>
