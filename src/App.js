@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import NewsSnippet from './src/components/NewsSnippet';
+import NewsSnippet from './components/NewsSnippet';
 import './App.css';
 
 const { Content } = Layout;
