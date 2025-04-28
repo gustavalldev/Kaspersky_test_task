@@ -1,70 +1,107 @@
-# Getting Started with Create React App
+# Тестовое задание: компонент отображения блока новости
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Описание проекта
+Данный проект содержит реализацию компонента для отображения блока новости в соответствии с техническим заданием. Компонент представляет собой карточку новости в темной теме, отображающую различные метаданные о новости, включая заголовок, содержание, дату публикации, ключевые слова, статистику и другую информацию.
 
-## Available Scripts
+## Используемые технологии
+- React 19
+- JavaScript
+- CSS
+- Ant Design
 
-In the project directory, you can run:
+## Установка и запуск
 
-### `npm start`
+### Предварительные требования
+- Node.js (рекомендуется последняя стабильная версия)
+- npm или yarn
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Шаги для запуска
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Клонировать репозиторий:
+   ```bash
+   git clone <ссылка-на-репозиторий>
+   ```
 
-### `npm test`
+2. Перейти в директорию проекта:
+   ```bash
+   cd my-news-app
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Установить зависимости:
+   ```bash
+   npm install
+   ```
+   или
+   ```bash
+   yarn install
+   ```
 
-### `npm run build`
+4. Запустить проект в режиме разработки:
+   ```bash
+   npm start
+   ```
+   или
+   ```bash
+   yarn start
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+5. Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Структура проекта
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── components/
+│   ├── NewsSnippet.jsx   # Основной компонент для отображения блока новости
+│   └── NewsSnippet.css   # Стили для компонента NewsSnippet
+├── App.jsx               # Корневой компонент приложения с тестовыми данными
+├── App.css               # Глобальные стили приложения
+├── index.js              # Точка входа в приложение
+└── ...                   # Другие служебные файлы
+```
 
-### `npm run eject`
+## Функциональность компонента NewsSnippet
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Компонент реализует следующие возможности:
+- Отображение заголовка и содержания новости
+- Форматирование и отображение даты публикации
+- Отображение статистики (охват, трафик)
+- Индикатор сантимента (положительный, отрицательный, нейтральный)
+- Функция "Show more" для расширения содержания
+- Выделение ключевых слов в тексте
+- Отображение списка ключевых слов с возможностью показать/скрыть дополнительные теги
+- Отображение информации об источнике, стране, языке и авторах
+- Секция с дубликатами новости
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Интерфейс данных
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Компонент принимает данные согласно следующему интерфейсу:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```javascript
+export interface IData_SnippetNews {
+    ID              : number                    // идентификатор новости
+    TI              : string                    // заголовок новости
+    AB              : string                    // содержимое новости
+    URL             : string                    // ссылка на новость
+    DOM             : string                    // домен
+    DP              : string                    // дата и время публикации
+    LANG            : string                    // язык новости
+    REACH           : number                    // охват новости
+    KW              : IData_TagItem[]           // ключевые слова
+    AU              : string[]                  // автор новости
+    CNTR            : string                    // страна
+    CNTR_CODE       : string                    // код страны
+    SENT            : string                    // сантимент новости
+    TRAFFIC         : IData_TrafficItem[]       // траффик из стран
+    FAV             : string                    // ссылка на иконку
+    HIGHLIGHTS      : string[]                  // блоки содержимого с ключевыми словами
+}
+```
 
-## Learn More
+## Скриншот компонента
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![Скриншот компонента](/my-news-app/public/testtask.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Автор
+[gustavalldev] - Кирилл
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
