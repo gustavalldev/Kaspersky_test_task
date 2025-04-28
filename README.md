@@ -100,7 +100,7 @@ export interface IData_SnippetNews {
 
 ## Скриншот компонента
 
-![Скриншот компонента](/my-news-app/public/testtask.png)
+![Скриншот компонента](/public/testtask.png)
 
 ## Автор
 [gustavalldev] - Кирилл
