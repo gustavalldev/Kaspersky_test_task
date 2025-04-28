@@ -90,11 +90,13 @@
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #3b82f6;
+  color: #0776D8;
   line-height: 1.3;
 }
 
-
+:where(.css-dev-only-do-not-override-1v5z42l) a {
+  color: #0776D8;
+}
 
 .news-title a:hover {
   text-decoration: underline;
@@ -159,7 +161,6 @@
 }
 
 .news-highlight {
-  margin-bottom: 12px;
   color: #d1d5db;
   font-size: 14px;
   line-height: 1.6;
@@ -190,6 +191,15 @@
   margin-left: 4px;
 }
 
+.show-all {
+  color: #0776D8;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
 /* Ключевые слова и счетчики */
 .keywords-container {
   display: flex;
@@ -202,15 +212,14 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: #2a2f3a;
   border-radius: 16px;
   padding: 4px 12px;
   font-size: 13px;
-  color: #d1d5db;
+  color: #9aa0a6;
+  border: 1px solid #4f4f4f;
 }
 
 .keyword-count {
-  background-color: #3b3f4b;
   color: #d1d5db;
   font-size: 12px;
   border-radius: 50%;
@@ -223,11 +232,11 @@
 
 .original-source-btn {
   background-color: #2a2f3a;
-  color: #9aa0a6;
+  color: #0776D8;
   border: none;
   border-radius: 4px;
   padding: 6px 16px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -238,7 +247,6 @@
 /* Раздел дубликатов */
 .duplicates-section {
   margin-top: 20px;
-  border-top: 1px solid #2a2f3a;
   padding-top: 16px;
 }
 
@@ -286,11 +294,11 @@
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #3b82f6;
+  color: #0776D8;
 }
 
 .duplicate-title a {
-  color: #3b82f6;
+  color: #0776D8;
   text-decoration: none;
 }
 

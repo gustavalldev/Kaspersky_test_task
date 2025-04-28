@@ -30,6 +30,42 @@ const App = () => {
       {
         "value": "new",
         "count": 1
+      },
+      {
+        "value": "key word 1",
+        "count": 3
+      },
+      {
+        "value": "key word 2",
+        "count": 2
+      },
+      {
+        "value": "key word 3",
+        "count": 1
+      },
+      {
+        "value": "key word 4",
+        "count": 5
+      },
+      {
+        "value": "key word 5",
+        "count": 2
+      },
+      {
+        "value": "key word 6",
+        "count": 4
+      },
+      {
+        "value": "key word 7",
+        "count": 1
+      },
+      {
+        "value": "key word 8",
+        "count": 3
+      },
+      {
+        "value": "key word 9",
+        "count": 6
       }
     ],
     "HIGHLIGHTS": [

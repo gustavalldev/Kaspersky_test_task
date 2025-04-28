@@ -13,6 +13,7 @@ const { Text } = Typography;
 
 const NewsSnippet = ({ data }) => {
   const [showMore, setShowMore] = useState(false);
+  const [showAllKeywords, setShowAllKeywords] = useState(false);
 
   // Форматирование даты публикации
   const formatDate = (dateString) => {
@@ -43,6 +44,66 @@ const NewsSnippet = ({ data }) => {
     });
   };
 
+  // Выделение ключевых слов в полном тексте
+  const formatFullText = (text) => {
+    if (!text) return '';
+    
+    // Если есть ключевые слова, выделим их в тексте
+    if (data.KW && data.KW.length > 0) {
+      // Создаем копию текста для обработки
+      let result = text;
+      
+      // Создаем массив частей для последующего объединения
+      const parts = [];
+      let lastIndex = 0;
+      
+      // Сортируем ключевые слова по длине в обратном порядке,
+      // чтобы избежать проблем с подстроками
+      const sortedKeywords = [...data.KW].sort((a, b) => 
+        b.value.length - a.value.length
+      );
+      
+      // Ищем все вхождения ключевых слов и заменяем их
+      sortedKeywords.forEach(keyword => {
+        const regex = new RegExp(keyword.value, 'gi');
+        let match;
+        
+        while ((match = regex.exec(result)) !== null) {
+          // Добавляем текст до ключевого слова
+          parts.push({
+            type: 'text',
+            content: result.substring(lastIndex, match.index)
+          });
+          
+          // Добавляем ключевое слово
+          parts.push({
+            type: 'keyword',
+            content: match[0]
+          });
+          
+          lastIndex = match.index + match[0].length;
+        }
+      });
+      
+      // Добавляем оставшийся текст
+      if (lastIndex < result.length) {
+        parts.push({
+          type: 'text',
+          content: result.substring(lastIndex)
+        });
+      }
+      
+      // Форматируем части в JSX
+      return parts.map((part, index) => 
+        part.type === 'keyword' 
+          ? <span key={index} className="keyword-highlight">{part.content}</span> 
+          : <React.Fragment key={index}>{part.content}</React.Fragment>
+      );
+    }
+    
+    return text;
+  };
+
   // Форматирование числа охвата
   const formatReach = (reach) => {
     if (reach >= 1000) {
@@ -69,6 +130,9 @@ const NewsSnippet = ({ data }) => {
     
     return <span dangerouslySetInnerHTML={{ __html: trafficText }} />;
   };
+
+  // Определяем отображаемые ключевые слова
+  const displayedKeywords = showAllKeywords ? data.KW : data.KW.slice(0, 3);
 
   return (
     <div className="news-snippet">
@@ -121,22 +185,17 @@ const NewsSnippet = ({ data }) => {
       <div className="news-content">
         {!showMore ? (
           // Показываем только первый хайлайт, если он есть
-          data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 ? (
+          data.HIGHLIGHTS && data.HIGHLIGHTS.length > 0 && (
             <div className="news-highlights">
               <div className="news-highlight">
                 {formatHighlights(data.HIGHLIGHTS[0])}
               </div>
             </div>
-          ) : (
-            // Если хайлайтов нет, показываем сокращенную версию AB
-            <div className="news-abstract">
-              {data.AB && data.AB.length > 150 ? data.AB.substring(0, 150) + '...' : data.AB}
-            </div>
           )
         ) : (
-          // При нажатии "Show more" показываем полный текст новости (AB)
+          // При нажатии "Show more" показываем полный текст новости (AB) с выделенными ключевыми словами
           <div className="news-abstract">
-            {data.AB}
+            {formatFullText(data.AB)}
           </div>
         )}
       </div>
@@ -148,30 +207,18 @@ const NewsSnippet = ({ data }) => {
 
       {/* Ключевые слова с счетчиками */}
       <div className="keywords-container">
-        {data.KW && data.KW.map((keyword, index) => (
+        {displayedKeywords.map((keyword, index) => (
           <div key={index} className="keyword-tag">
             {keyword.value}
             <span className="keyword-count">{keyword.count}</span>
           </div>
         ))}
-
-        {/* Дополнительно добавляем фиктивные ключевые слова из скриншота */}
-        <div className="keyword-tag">
-          key word
-          <span className="keyword-count">1</span>
-        </div>
-        <div className="keyword-tag">
-          key word
-          <span className="keyword-count">1</span>
-        </div>
-        <div className="keyword-tag">
-          key word
-          <span className="keyword-count">1</span>
-        </div>
         
-        <div className="show-more">
-          Show All +9
-        </div>
+        {data.KW && data.KW.length > 3 && (
+          <div className="show-all" onClick={() => setShowAllKeywords(!showAllKeywords)}>
+            {showAllKeywords ? 'Show Less' : `Show All +${data.KW.length - displayedKeywords.length}`}
+          </div>
+        )}
       </div>
 
       <Button className="original-source-btn">
