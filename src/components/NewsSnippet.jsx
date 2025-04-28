@@ -5,7 +5,18 @@ import {
   UserOutlined, 
   DownOutlined, 
   SortDescendingOutlined,
-  InfoCircleOutlined
+  InfoCircleOutlined,
+  BorderOutlined, 
+  CheckSquareOutlined,
+  ReadOutlined,
+  TagOutlined, 
+  FileTextOutlined,
+  SecurityScanOutlined,
+  AlertOutlined,
+  SafetyCertificateOutlined,
+  ApiOutlined,
+  CodeOutlined,
+  SettingOutlined
 } from '@ant-design/icons';
 import './NewsSnippet.css';
 
@@ -105,6 +116,31 @@ const NewsSnippet = ({ data }) => {
   // Определяем отображаемые ключевые слова
   const displayedKeywords = showAllKeywords ? data.KW : data.KW.slice(0, 3);
 
+  // Добавьте функцию выбора иконки внутри компонента
+  const getIconForKeyword = (keyword) => {
+    // Можно настроить правила выбора иконок на основе ключевых слов
+    switch (keyword.toLowerCase()) {
+      case 'antivirus':
+        return <SecurityScanOutlined />;
+      case 'kaspersky':
+        return <SafetyCertificateOutlined />;
+      case 'new':
+        return <AlertOutlined />;
+      case 'key word 1':
+        return <FileTextOutlined />;
+      case 'key word 2':
+        return <GlobalOutlined />;
+      case 'key word 3':
+        return <UserOutlined />;
+      case 'key word 4':
+        return <ApiOutlined />;
+      case 'key word 5':
+        return <CodeOutlined />;
+      default:
+        return <TagOutlined />;
+    }
+  };
+
   return (
     <div className="news-snippet">
       {/* Верхняя часть с датой и статистикой */}
@@ -121,10 +157,10 @@ const NewsSnippet = ({ data }) => {
             {data.SENT.charAt(0).toUpperCase() + data.SENT.slice(1)}
           </span>
           <Tooltip title="Info">
-            <InfoCircleOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
+            <CheckSquareOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
           </Tooltip>
           <Tooltip title="Bookmark">
-            <InfoCircleOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
+            <BorderOutlined style={{ color: '#9aa0a6', marginLeft: '8px' }} />
           </Tooltip>
         </div>
       </div>
@@ -135,16 +171,25 @@ const NewsSnippet = ({ data }) => {
           {data.TI}
         </a>
       </h2>
-
       {/* Информация об источнике */}
       <div className="news-source-info">
         <div className="news-domain">
-          <img src={data.FAV} alt="Source icon" />
-          <span>{data.DOM}</span>
+          <GlobalOutlined />
+          <a href={`https://${data.DOM}`} target="_blank" rel="noopener noreferrer">
+            {data.DOM}
+          </a>
         </div>
-        <div className="news-language">
-          <span className="flag-icon">🇦🇹</span>
+        <div className="news-country">
+          <img 
+            src={`https://flagcdn.com/24x18/fr.png`} 
+            alt="France" 
+            className="flag-icon"
+          />
           <span>{data.CNTR}</span>
+        </div>
+        <div className='news-language'>
+          <span className='lang-icon'><ReadOutlined /></span>
+          <span>{data.LANG}</span>
         </div>
         <div className="news-authors">
           <UserOutlined />
@@ -178,6 +223,7 @@ const NewsSnippet = ({ data }) => {
       <div className="keywords-container">
         {displayedKeywords.map((keyword, index) => (
           <div key={index} className="keyword-tag">
+            {getIconForKeyword(keyword.value)}
             {keyword.value}
             <span className="keyword-count">{keyword.count}</span>
           </div>
@@ -199,7 +245,7 @@ const NewsSnippet = ({ data }) => {
         <div className="duplicates-header">
           <span>Duplicates: <span className="duplicates-count">192</span></span>
           <div className="sort-by">
-            By Relevance <SortDescendingOutlined />
+            By Relevance <DownOutlined style={{ color: '#fff' }} />
           </div>
         </div>
 
@@ -215,11 +261,17 @@ const NewsSnippet = ({ data }) => {
           </div>
           <div className="duplicate-source">
             <div className="duplicate-domain">
-              <GlobalOutlined />
-              <span>ria.ru</span>
+              <img src={data.FAV} alt="Source icon" />
+              <a href={`https://ria.ru`} target="_blank" rel="noopener noreferrer">
+                ria.ru
+              </a>
             </div>
-            <div className="news-language">
-              <span className="flag-icon">🇦🇹</span>
+            <div className="news-country">
+            <img 
+              src={`https://flagcdn.com/24x18/fr.png`} 
+              alt="France" 
+              className="flag-icon"
+            />
               <span>{data.CNTR}</span>
             </div>
             <div className="duplicate-authors">

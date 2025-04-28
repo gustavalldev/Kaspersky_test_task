@@ -17,7 +17,7 @@ const App = () => {
     "SENT": "negative",
     "LANG": "en",
     "AU": [],
-    "FAV": "/favicons/e65d69dc71ab539384fcc63062efdd3d.png",
+    "FAV": "/favicons/7738202.png",
     "KW": [
       {
         "value": "antivirus",
