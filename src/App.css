@@ -1,23 +1,42 @@
-.app-layout {
-  min-height: 100vh;
-  background-color: #f0f2f5;
+/* Глобальные стили */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #111014;
+  color: #fff;
 }
 
-.app-content {
-  background: black;
-  padding: 24px;
+/* Переопределение стилей antd для темной темы */
+.ant-layout {
+  background-color: #111014;
 }
 
-.app-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
+.ant-btn {
   border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 }
 
-.app-title {
-  margin-bottom: 24px;
-  text-align: center;
-  color: #1890ff;
+.ant-tooltip-inner {
+  background-color: #2a2f3a;
+  color: #fff;
+}
+
+/* Стили для прокрутки */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1a1d24;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2a2f3a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3b3f4b;
 }

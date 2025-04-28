@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import NewsSnippet from './src/components/NewsSnippet';
+import NewsSnippet from './components/NewsSnippet';
 import './App.css';
 
 const { Content } = Layout;
@@ -57,12 +57,9 @@ const App = () => {
   };
 
   return (
-    <Layout className="app-layout">
-      <Content className="app-content">
-        <div className="app-container">
-          <h1 className="app-title">Новостной компонент</h1>
-          <NewsSnippet data={newsData} />
-        </div>
+    <Layout style={{minHeight: '100vh', padding: '24px' }}>
+      <Content style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <NewsSnippet data={newsData} />
       </Content>
     </Layout>
   );
